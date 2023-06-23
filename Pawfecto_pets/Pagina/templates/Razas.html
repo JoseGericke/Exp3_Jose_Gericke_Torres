@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/Logo.jpg' %}" sizes="16x16">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+    <title>Alegrate el dia</title>
+</head>
+<body>
+</nav>
+<div class="jumbotron">
+    <h1>Pawfecto Pets</h1>
+    <p>La tienda para mascotas felices</p>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="container">
+            <h1>Descubre las Razas de nuestros mejores amigos</h1>
+
+            <label for="raza">Selecciona una raza de perro:</label>
+            <select id="raza" onchange="obtenerImagen()">
+                <option value="">-- Selecciona una raza --</option>
+            </select>
+            <div class="container-fluid">
+                <div id="imagen"></div>
+            </div>
+
+
+            <button onclick="randomizarImagen()">Randomizar imagen</button>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="container">
+
+            <h1>Calculadora de IMC para perros</h1>
+            <form id="formulario">
+                <label for="peso">Peso del perro (kg):</label>
+                <input type="number" id="peso" name="peso" required><br><br>
+
+                <label for="altura-hombro">Altura del hombro del perro (cm):</label>
+                <input type="number" id="altura-hombro" name="altura-hombro" required><br><br>
+
+                <label for="distancia-occipital">Distancia occipucio-cola del perro (cm):</label>
+                <input type="number" id="distancia-occipital" name="distancia-occipital" required><br><br>
+
+                <button type="submit">Calcular IMC</button>
+            </form>
+
+            <div id="resultado"></div>
+
+            <script>
+                function calcularIMCPerro(peso, alturaHombro, distanciaOccipital) {
+                    // Convertir la altura del hombro y la distancia occipucio a metros
+                    alturaHombro = alturaHombro / 100;
+                    distanciaOccipital = distanciaOccipital / 100;
+
+                    // Calcular el "IMC" del perro utilizando la fórmula proporcionada
+                    var imc = peso / (alturaHombro * distanciaOccipital);
+
+                    // Redondear el resultado a dos decimales y devolverlo
+                    return imc.toFixed(2);
+                }
+
+                // Obtener el formulario y el div donde se mostrará el resultado
+                var formulario = document.getElementById("formulario");
+                var resultado = document.getElementById("resultado");
+
+                // Manejar el evento de envío del formulario
+                formulario.addEventListener("submit", function(event) {
+                    event.preventDefault(); // Evitar que se recargue la página
+
+                    // Obtener los valores ingresados por el usuario
+                    var peso = parseFloat(document.getElementById("peso").value);
+                    var alturaHombro = parseFloat(document.getElementById("altura-hombro").value);
+                    var distanciaOccipital = parseFloat(document.getElementById("distancia-occipital").value);
+
+                    // Calcular el "IMC" del perro
+                    var imcPerro = calcularIMCPerro(peso, alturaHombro, distanciaOccipital);
+
+                    // Mostrar el resultado en la página
+                    resultado.innerHTML = "El 'IMC' del perro es: " + imcPerro;
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    let ultimaRaza;
+
+    obtenerRazas();
+
+    function obtenerRazas() {
+        fetch('https://dog.ceo/api/breeds/list/all')
+            .then(response => response.json())
+            .then(data => {
+                const razas = Object.keys(data.message);
+                const select = document.getElementById('raza');
+                razas.forEach(raza => {
+                    const option = document.createElement('option');
+                    option.value = raza;
+                    option.textContent = raza;
+                    select.appendChild(option);
+                });
+            });
+    }
+
+    function obtenerImagen() {
+        const raza = document.getElementById('raza').value;
+        if (raza) {
+            fetch(`https://dog.ceo/api/breed/${raza}/images/random`)
+                .then(response => response.json())
+                .then(data => {
+                    const url = data.message;
+                    ultimaRaza = raza;
+                    mostrarImagen(url);
+                });
+        } else {
+            document.getElementById('imagen').innerHTML = '';
+        }
+    }
+
+    function randomizarImagen() {
+        if (ultimaRaza) {
+            fetch(`https://dog.ceo/api/breed/${ultimaRaza}/images/random`)
+                .then(response => response.json())
+                .then(data => {
+                    const url = data.message;
+                    mostrarImagen(url);
+                });
+        }
+    }
+
+    function mostrarImagen(url) {
+        const imagen = document.createElement('img');
+        imagen.src = url;
+        document.getElementById('imagen').innerHTML = '';
+        document.getElementById('imagen').appendChild(imagen);
+    }
+</script>
+</div>
+<div class="jumbotron" style="background-color: white;">
+
+</div>
+<div class="jumbotron" style="background-color: white;">
+
+</div>
+<div class="jumbotron" style="background-color: white;">
+
+</div>
+
+<div class="container-fluid">
+    <footer class="footer">
+        <div class="row">
+            <div class="col-6 text-center">
+                <p>&copy; 2023 Jose Gericke. Todos los derechos reservados.</p>
+            </div>
+            <div class="col-6 text-center">
+                <ul class="redes-sociales">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </ul>
+            </div>
+        </div>
+
+    </footer>
+</div>
+
+</body>
+</html>
+
+{% endblock %}

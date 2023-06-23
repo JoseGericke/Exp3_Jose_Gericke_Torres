@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Resto del código -->
+</head>
+<body>
+</nav>
+    <div class="container"> 
+        <h1>Productos</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Marca</th>
+                    <th>Nombre</th>
+                    <th>Categoria</th>
+                    <th>Imagen</th>
+                    <th>Eliminar</th>
+                    <th>Modificar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Producto in Productos %}
+                <tr>
+                    <td>{{ Producto.codigo }}</td>
+                    <td>{{ Producto.marca }}</td>
+                    <td>{{ Producto.nombre }}</td>
+                    <td>{{ Producto.categoria }}</td>
+                    {% if Producto.imagen %}
+                    <td>
+                        <img src="{{ Producto.imagen.url }}" style="height: 50px; width: 50px;">
+                    </td>
+                    {% else %}
+                    <td>
+                        <p style="color:red">No tiene foto</p>
+                    </td>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <td>
+                            <a href="{% url 'eliminar' Producto.codigo %}" class="btn btn-danger">Eliminar</a>
+                        </td>
+                    {% else %}
+                        <td>
+                            <a href="#" class="btn btn-danger">No tiene permiso</a>
+                        </td>
+                    {% endif %}
+                    
+                    <td>
+                        <a href="{% url 'modificar' Producto.codigo %}" class="btn btn-warning">Modificar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'crear' %}" class="btn btn-success">Crear Producto</a>
+    </div>
+    
+<div class="jumbotron" style="background-color: white;"></div>
+
+
+    <div class="container-fluid">
+        <footer class="footer">
+            <div class="row">
+                <div class="col-6 text-center">
+                  <p>&copy; 2023 Jose Gericke. Todos los derechos reservados.</p>
+                </div>
+				<div class="col-6 text-center">
+					<ul class="redes-sociales">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+					  </ul>
+				</div>
+              </div>
+
+        </footer>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawfecto Pets</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'img/logo_Pawfecto.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/Styles.css' %}" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4" id="barraNav">
+        <a href="{% url 'Inicio' %}" id="logoPawfectoPet" class="text-white">
+            <img src="{% static 'img/logoPawfectoPet.avif' %}" alt="logoPawfectoPet" width="40px">Pawfecto
+        </a>
+        <!-- botón hamburguesa -->
+        <div class="navmenu">
+            <nav class="navbar navbar-expand-sm">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#opciones">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <a href="{% url 'Inicio' %}" class="navbar-brand">
+                    <img src="{% static 'img/Logo.avif' %}" width="30px" height="30px">
+                </a>
+        
+                <!-- Definimos las opciones de menú -->
+        
+                <div class="collapse navbar-collapse " id="opciones">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'Inicio' %}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'tarjetas' %}">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'sobrenosotros' %}">Sobre Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'contactanos' %}">Contactanos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'razas' %}">Razas de perros</a>
+                        </li>
+                    </ul>
+                    {% if user.is_superuser %}
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'otra' %}">Gestionar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'mostrar' %}">Mostrar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Bienvenid@ {{ user.username }}</a>
+                        </li>
+                        
+                    </ul>
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'registrar' %}">Registrarse</a>
+                        </li>
+                    </ul>
+                    {% endif %}
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                        </li>
+                    </ul>
+                    <form class="form-inline  mt-2 mt-md-0 ">
+                        <input class="form-control mr-sm-2" type="text" placeholder="¿Qué Producto buscas?" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btnBuscar">Buscar</button>
+                    </form> 
+        
+                     <div class="ml-4 ">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" id="userPawfecto">
+                            <img src="{% static 'img/Logo.jpg' %}" 
+                                alt="userPawfecto" width="20px">Cerrar sesión
+                        </a>
+                        {% else %} 
+                        <a href="{% url 'login' %}" id="userPawfecto">
+                            <img src="{% static 'img/Logo.jpg' %}" 
+                                alt="userPawfecto" width="20px">Iniciar sesión
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>   
+             </nav>           
+         </div>
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>
